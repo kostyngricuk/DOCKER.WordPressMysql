@@ -1,0 +1,47 @@
+version: '3.1'
+
+services:
+
+  wordpress:
+    image: wordpress
+    container_name: wordpress
+    restart: always
+    ports:
+      - 80:80
+      - 8080:80
+      - 443:443
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: ${DB_USER}
+      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD}
+      WORDPRESS_DB_NAME: ${DB_NAME}
+      WORDPRESS_TABLE_PREFIX: ${DB_PREFIX}
+    volumes:
+      - ./DOCKER/WP/config/php.ini:/usr/local/etc/php/php.ini
+      - ./DOCKER/WP/config/sites-enabled:/etc/apache2/sites-enabled
+      - ./.:/var/www/html
+
+  db:
+    image: mysql:5.7
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - ./DOCKER/MYSQL/config/my.ini:/etc/mysql/conf.d/my.ini
+      - ./DOCKER/MYSQL/data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    ports:
+        - 8090:80
+    links:
+        - db:db
+
+volumes:
+  wordpress:
+  db:
