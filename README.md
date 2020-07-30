@@ -7,4 +7,7 @@
 
 4) Run cmd "docker-compose up -d"
 
+WEBSITE URL: https://yourdomain.com
+PHPMYADMIN URL: http://localhost:8090
+
 P.S. If you want to reset MYSQL database, you need to delete folder "/DOCKER/MYSQL/data" and run cmd "docker-compose up -d"
